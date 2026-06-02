@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Nilla och Linnet 40 år – indiequiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Permanent+Marker&family=Bitter:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#d9b27e;
+    --paper-2:#cda062;
+    --cream:#f4e7c9;
+    --cream-2:#fbf2dc;
+    --ink:#1c140b;
+    --gold:#e9a522;
+    --gold-deep:#c9851a;
+    --maroon:#6e1818;
+    --maroon-2:#561212;
+    --teal:#1f6b6b;
+    --black:#15110a;
+    --slab:'Alfa Slab One', Georgia, 'Times New Roman', serif;
+    --marker:'Permanent Marker', 'Bradley Hand', cursive;
+    --body:'Bitter', Georgia, serif;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:var(--body);
+    color:var(--ink);
+    background:
+      radial-gradient(120% 90% at 50% -10%, #e6c590 0%, var(--paper) 45%, var(--paper-2) 100%);
+    min-height:100vh;
+    position:relative;
+    overflow-x:hidden;
+  }
+  /* halftone + grain atmosphere */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background-image:radial-gradient(rgba(90,40,20,.16) 1px, transparent 1.4px);
+    background-size:7px 7px;
+    opacity:.5;
+    mix-blend-mode:multiply;
+  }
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(60% 50% at 12% 88%, rgba(31,107,107,.25), transparent 60%),
+      radial-gradient(50% 45% at 95% 10%, rgba(110,24,24,.22), transparent 60%);
+    mix-blend-mode:multiply;
+  }
+
+  .wrap{
+    position:relative;z-index:2;
+    max-width:600px;margin:0 auto;
+    padding:22px 18px 60px;
+    min-height:100vh;
+  }
+  /* woven crosshatch frame echoing the posters */
+  .frame{
+    position:relative;
+    background:linear-gradient(180deg, rgba(244,231,201,.35), rgba(244,231,201,.12));
+    border:3px solid var(--maroon-2);
+    box-shadow:0 18px 40px rgba(40,20,8,.35), inset 0 0 0 6px rgba(244,231,201,.25);
+    padding:20px 18px 26px;
+  }
+  .frame::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(45deg, rgba(86,18,18,.18) 0 2px, transparent 2px 9px),
+               repeating-linear-gradient(-45deg, rgba(86,18,18,.12) 0 2px, transparent 2px 9px);
+    mix-blend-mode:multiply;
+    -webkit-mask:linear-gradient(#000,#000) padding-box,linear-gradient(#000,#000);
+    mask-composite:exclude;-webkit-mask-composite:destination-out;
+    border:14px solid transparent;
+  }
+
+  /* ===== masthead ===== */
+  .masthead{
+    position:relative;
+    background:var(--black);
+    color:var(--cream);
+    transform:rotate(-1.4deg);
+    padding:10px 16px 12px;
+    margin:0 auto 4px;
+    width:max-content;max-width:100%;
+    clip-path:polygon(0% 6%,4% 0,34% 3%,62% 0,99% 4%,100% 0,99% 58%,100% 95%,66% 100%,38% 97%,9% 100%,0 96%);
+    box-shadow:4px 6px 0 rgba(40,20,8,.25);
+  }
+  .masthead .ml{
+    font-family:var(--slab);
+    line-height:.92;
+    letter-spacing:.5px;
+    text-shadow:1px 1px 0 rgba(0,0,0,.4);
+  }
+  .gold{color:var(--gold);}
+  .star{
+    position:absolute;top:-12px;right:-6px;color:var(--teal);
+    font-size:34px;transform:rotate(8deg);text-shadow:2px 2px 0 rgba(0,0,0,.3);
+    z-index:3;
+  }
+  /* sizes */
+  .masthead.sm{transform:rotate(-1.2deg);padding:7px 13px 9px;}
+  .masthead.sm .ml{font-size:23px;}
+  .masthead.sm .star{font-size:24px;top:-9px;}
+  .masthead.lg .ml{font-size:clamp(34px,9vw,52px);}
+  .masthead.lg .star{font-size:46px;top:-16px;right:-8px;}
+
+  /* red brush banner */
+  .banner{
+    position:relative;
+    background:var(--maroon);
+    color:var(--cream-2);
+    font-family:var(--marker);
+    text-align:center;
+    transform:rotate(.5deg);
+    padding:7px 22px 11px;
+    margin:6px auto 0;
+    width:max-content;max-width:96%;
+    font-size:clamp(16px,4.4vw,21px);
+    letter-spacing:.4px;
+    clip-path:polygon(1% 12%,99% 4%,100% 86%,2% 96%);
+    box-shadow:3px 4px 0 rgba(40,20,8,.18);
+  }
+  .banner::after{
+    content:"";position:absolute;left:18%;right:18%;bottom:5px;height:3px;
+    background:var(--cream-2);border-radius:3px;transform:rotate(-.6deg);opacity:.85;
+  }
+
+  /* progress */
+  .progress{
+    display:flex;align-items:center;justify-content:space-between;
+    font-family:var(--marker);color:var(--maroon-2);
+    margin:14px 2px 8px;font-size:14px;letter-spacing:.5px;
+  }
+  .progress .cat{color:var(--teal);}
+  .pbar{height:7px;background:rgba(86,18,18,.18);border-radius:6px;overflow:hidden;margin:0 2px 14px;}
+  .pbar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-deep));transition:width .35s ease;}
+
+  /* slide image as taped photo */
+  .photo{
+    position:relative;margin:12px auto 16px;width:88%;max-width:430px;
+    background:#fdfaf2;padding:9px 9px 12px;
+    border:1px solid rgba(40,20,8,.2);
+    box-shadow:0 12px 26px rgba(40,20,8,.4);
+    transform:rotate(-1.1deg);
+  }
+  .photo img{display:block;width:100%;height:auto;border:1px solid rgba(0,0,0,.08);}
+  .photo .tape{
+    position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg);
+    width:96px;height:26px;background:rgba(233,165,34,.55);
+    box-shadow:0 1px 3px rgba(0,0,0,.2);
+  }
+
+  .prompt{
+    font-size:16px;line-height:1.45;font-weight:600;
+    margin:4px 4px 14px;
+  }
+  .note{font-size:13px;font-style:italic;color:var(--maroon-2);margin:-8px 4px 14px;}
+
+  /* inputs */
+  .field{margin:0 2px 12px;}
+  .field label{
+    display:block;font-family:var(--marker);font-size:14px;
+    color:var(--maroon-2);margin-bottom:4px;letter-spacing:.3px;
+  }
+  input[type=text]{
+    width:100%;font-family:var(--body);font-size:16px;color:var(--ink);
+    background:var(--cream-2);
+    border:2px solid var(--ink);border-radius:2px;
+    padding:11px 12px;outline:none;
+    box-shadow:2px 2px 0 rgba(40,20,8,.15);
+  }
+  input[type=text]:focus{border-color:var(--gold-deep);box-shadow:2px 2px 0 var(--gold);}
+  .fieldrow{display:flex;gap:8px;align-items:flex-start;margin:0 2px 10px;}
+  .fieldrow .tag{
+    flex:0 0 30px;height:46px;display:flex;align-items:center;justify-content:center;
+    font-family:var(--slab);font-size:18px;color:var(--cream-2);
+    background:var(--maroon);border-radius:3px;margin-top:0;
+  }
+  .fieldrow input{flex:1;}
+  .itemlabel{font-size:14px;font-weight:600;line-height:1.3;margin-bottom:5px;}
+
+  /* radio / choice */
+  .choice{
+    display:block;margin:0 2px 10px;cursor:pointer;
+    background:var(--cream-2);border:2px solid var(--ink);border-radius:3px;
+    padding:12px 14px;font-size:15.5px;line-height:1.35;
+    box-shadow:2px 2px 0 rgba(40,20,8,.15);
+    transition:transform .08s ease, background .15s ease;
+    display:flex;align-items:center;gap:11px;
+  }
+  .choice:active{transform:translate(1px,1px);}
+  .choice .dot{
+    flex:0 0 18px;width:18px;height:18px;border:2px solid var(--ink);border-radius:50%;
+    display:inline-block;position:relative;
+  }
+  .choice.sel{background:var(--gold);border-color:var(--maroon-2);box-shadow:2px 2px 0 var(--maroon);}
+  .choice.sel .dot{background:var(--maroon);border-color:var(--maroon-2);}
+  .choice.sel .dot::after{content:"";position:absolute;inset:3px;background:var(--cream-2);border-radius:50%;}
+
+  /* multi grid */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 2px;}
+  .chip{
+    cursor:pointer;background:var(--cream-2);border:2px solid var(--ink);border-radius:3px;
+    padding:11px 8px;font-size:14.5px;display:flex;align-items:center;gap:8px;
+    box-shadow:2px 2px 0 rgba(40,20,8,.15);line-height:1.2;
+  }
+  .chip .num{
+    flex:0 0 22px;width:22px;height:22px;border-radius:50%;background:var(--maroon);
+    color:var(--cream-2);font-family:var(--slab);font-size:13px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .chip.sel{background:var(--gold);border-color:var(--maroon-2);box-shadow:2px 2px 0 var(--maroon);}
+  .pickhint{text-align:center;font-family:var(--marker);color:var(--maroon-2);font-size:13px;margin:10px 0 0;}
+
+  /* wait pill + nav */
+  .wait{
+    display:flex;align-items:center;gap:8px;justify-content:center;
+    background:var(--black);color:var(--cream);font-family:var(--marker);
+    font-size:13.5px;letter-spacing:.3px;
+    padding:9px 14px;border-radius:30px;margin:20px auto 14px;width:max-content;max-width:100%;
+    transform:rotate(-.6deg);box-shadow:3px 3px 0 rgba(40,20,8,.2);text-align:center;
+  }
+  .nav{display:flex;gap:10px;margin:4px 2px 0;}
+  .btn{
+    font-family:var(--marker);font-size:18px;letter-spacing:.4px;cursor:pointer;
+    border:2px solid var(--ink);border-radius:4px;padding:13px 16px;
+    box-shadow:3px 3px 0 rgba(40,20,8,.25);transition:transform .08s ease;
+  }
+  .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(40,20,8,.25);}
+  .btn.primary{flex:1;background:var(--gold);color:var(--ink);}
+  .btn.ghost{background:transparent;color:var(--maroon-2);}
+  .btn.full{width:100%;}
+
+  /* welcome */
+  .welcome-sub{
+    text-align:center;font-family:var(--marker);color:var(--maroon-2);
+    font-size:clamp(17px,5vw,22px);margin:16px 0 4px;transform:rotate(-.6deg);
+  }
+  .sticker{
+    width:118px;height:118px;border-radius:50%;background:var(--teal);color:var(--cream-2);
+    font-family:var(--marker);display:flex;align-items:center;justify-content:center;text-align:center;
+    line-height:1.15;font-size:17px;transform:rotate(-9deg);margin:8px auto 2px;
+    box-shadow:4px 5px 0 rgba(40,20,8,.25);border:2px dashed rgba(244,231,201,.6);
+  }
+  .intro{
+    background:var(--cream-2);border:2px solid var(--ink);border-left:7px solid var(--maroon);
+    padding:13px 15px;margin:18px 2px;font-size:14.5px;line-height:1.5;
+    box-shadow:3px 3px 0 rgba(40,20,8,.18);
+  }
+  .intro b{color:var(--maroon-2);}
+
+  /* summary */
+  .sumhead{font-family:var(--marker);text-align:center;color:var(--maroon-2);font-size:20px;margin:14px 0 4px;}
+  .sumteam{text-align:center;font-family:var(--slab);font-size:24px;color:var(--ink);margin:0 0 10px;word-break:break-word;}
+  .sumitem{
+    background:var(--cream-2);border:2px solid var(--ink);border-radius:3px;
+    padding:10px 13px;margin:0 2px 9px;box-shadow:2px 2px 0 rgba(40,20,8,.13);
+  }
+  .sumitem .sq{font-family:var(--marker);color:var(--teal);font-size:13px;letter-spacing:.4px;}
+  .sumitem .sp{font-weight:600;font-size:14px;margin:2px 0 6px;line-height:1.3;}
+  .sumitem .sa{font-size:15px;}
+  .sumitem .sa .lbl{color:var(--maroon-2);font-weight:600;}
+  .sumitem .sa.empty{color:#9b6a45;font-style:italic;}
+  .sumnote{text-align:center;font-size:14px;font-style:italic;color:var(--maroon-2);margin:14px 4px 18px;}
+
+  @media print{
+    body{background:#fff;}
+    body::before,body::after{display:none;}
+    .frame{box-shadow:none;border-color:#777;}
+    .frame::before{display:none;}
+    .nav,.btn{display:none;}
+    .sumitem{box-shadow:none;break-inside:avoid;}
+    .masthead{box-shadow:none;}
+  }
+  .multiinstr{font-family:var(--marker);text-align:center;color:var(--maroon-2);font-size:16px;margin:0 2px 12px;line-height:1.3;}
+  .lettergrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:2px;}
+  .lettergrid .lt{cursor:pointer;background:var(--cream-2);border:2px solid var(--ink);border-radius:4px;font-family:var(--slab);font-size:24px;text-align:center;padding:16px 0;box-shadow:2px 2px 0 rgba(40,20,8,.15);transition:transform .08s ease;}
+  .lettergrid .lt:active{transform:translate(1px,1px);}
+  .lettergrid .lt.sel{background:var(--gold);border-color:var(--maroon-2);box-shadow:2px 2px 0 var(--maroon);}
+  .song{margin:0 2px 12px;}
+  .song .shead{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+  .song .stag{flex:0 0 30px;height:30px;display:flex;align-items:center;justify-content:center;font-family:var(--slab);font-size:17px;color:var(--cream-2);background:var(--maroon);border-radius:3px;}
+  .song .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .dating{margin:0 2px;}
+  .ditem{margin-bottom:14px;padding-bottom:12px;border-bottom:1px dashed rgba(86,18,18,.3);}
+  .ditem:last-child{border-bottom:none;}
+  .ditem .dlbl{font-size:14px;font-weight:600;line-height:1.3;margin-bottom:6px;}
+  .ditem .dgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .ditem .dgrid label{display:block;font-family:var(--marker);font-size:12px;color:var(--maroon-2);margin-bottom:3px;}
+  .scorebox{position:sticky;top:0;z-index:5;background:var(--black);color:var(--cream);font-family:var(--slab);text-align:center;padding:11px;border-radius:4px;margin:0 2px 8px;font-size:20px;box-shadow:3px 4px 0 rgba(40,20,8,.25);}
+  .scorebox span{color:var(--gold);}
+  .graderow{display:flex;align-items:center;gap:8px;justify-content:space-between;padding:8px 0;border-top:1px dashed rgba(86,18,18,.25);}
+  .graderow:first-of-type{border-top:none;}
+  .graderow .ga{flex:1;font-size:14.5px;line-height:1.32;}
+  .graderow .ga .lbl{color:var(--maroon-2);font-weight:600;}
+  .graderow .ga.empty{color:#9b6a45;font-style:italic;}
+  .gbtns{display:flex;gap:5px;flex:0 0 auto;}
+  .gbtn{cursor:pointer;border:2px solid var(--ink);border-radius:5px;background:var(--cream-2);color:var(--ink);font-family:var(--marker);font-size:13px;padding:7px 9px;min-width:36px;text-align:center;line-height:1;}
+  .gbtn.pos.on{background:#2e7d32;color:#fff;border-color:#1b4d1f;}
+  .gbtn.neg.on{background:#b3261e;color:#fff;border-color:#7a160f;}
+  .qmaster{margin:26px auto 2px;text-align:center;font-family:var(--marker);font-size:13px;color:rgba(40,20,8,.42);letter-spacing:1.5px;cursor:pointer;user-select:none;-webkit-user-select:none;}
+  .ditem select{width:100%;font-family:var(--body);font-size:15px;color:var(--ink);background:var(--cream-2);border:2px solid var(--ink);border-radius:2px;padding:9px 8px;box-shadow:2px 2px 0 rgba(40,20,8,.15);}
+  .ditem select:focus{outline:none;border-color:var(--gold-deep);box-shadow:2px 2px 0 var(--gold);}
+  .exportta{display:none;width:calc(100% - 4px);height:170px;margin:12px 2px 0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;background:var(--cream-2);border:2px solid var(--ink);border-radius:3px;padding:10px;color:var(--ink);white-space:pre;}
+  .bshead{font-family:var(--slab);text-align:center;background:var(--black);color:var(--gold);padding:10px;border-radius:4px;margin:14px 2px 8px;letter-spacing:1px;font-size:16px;box-shadow:3px 4px 0 rgba(40,20,8,.25);}
+  .bsitem{background:var(--cream-2);border:2px solid var(--ink);border-left:7px solid var(--teal);border-radius:3px;padding:12px 13px;margin:0 2px 12px;box-shadow:2px 2px 0 rgba(40,20,8,.13);overflow:auto;}
+  .bsimg{width:150px;max-width:46%;height:auto;border:2px solid var(--ink);float:right;margin:0 0 8px 12px;}
+  .bslabel{font-family:var(--marker);font-size:13px;color:var(--maroon-2);margin:8px 0 2px;}
+  .bssay{font-size:15px;line-height:1.45;}
+  .bsfac{font-size:15px;font-weight:700;color:var(--teal);line-height:1.4;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="frame" id="app"></div>
+</div>
+
+<script>
+const IMAGES = {"1": "1%20-%20stor.jpeg", "2": "2%20-%20stor.jpeg", "3": "3%20-%20stor.jpeg", "4": "4%20-%20stor.jpeg", "5": "5%20-%20stor.jpeg", "6": "6%20-%20stor.jpeg", "7": "7%20-%20stor.jpeg", "8": "8%20-%20stor.jpeg", "9": "9%20-%20stor.jpeg", "10": "10%20-%20stor.jpeg", "11": "11%20-%20stor.jpeg", "12": "12%20-%20stor.jpeg", "13": "13%20-%20stor.jpeg", "14": "14%20-%20stor.jpeg", "15": "15%20-%20stor.jpeg", "16": "16%20-%20stor.jpeg", "17": "17%20-%20stor.jpeg", "18": "18%20-%20stor.jpeg", "19": "19%20-%20stor.jpeg"};
+
+const Q = [
+ {n:1,img:'2',cat:'GLASS',banner:'sommarglassen',prompt:'Vilken GB-glass blev 2005 så omdiskuterad att kritikerna ville byta namn på den – trots att det "bara" var en glass?',type:'text',ph:'Glassens namn'},
+ {n:2,img:'3',cat:'GLASS',banner:'priskoll',prompt:'Vad kostade en Piggelin 1986?',type:'text',ph:'Pris i kr och ören',note:'Skriv pris i kr och ören. Rätt om ni är max en krona ifrån.'},
+ {n:3,img:'4',cat:'GLASS',banner:'gissa glassarna',prompt:'Ben & Jerry’s introducerades i Sverige i mitten av 00-talet. Vad heter de fyra smakerna?',type:'fields',fields:['A','B','C','D'],ph:'Smakens namn'},
+ {n:4,img:'5',cat:'COVER NR 1',banner:'vad heter originalet?',prompt:'Lyssna på covern. Vad heter originalet – grupp/artist + låttitel?',type:'fields',fields:['Artist / grupp','Låttitel']},
+ {n:5,img:'6',cat:'INTERNET',banner:'rosa mannen',prompt:'Daniel "Rosa Mannen" Johansson laddade upp gamla tv-klipp på YouTube. Vilket av hans klipp är absolut mest sett?',type:'radio',options:['Ett avsnitt av Björnes magasin (1987)','En Gevalia-reklam från 90-talet','Ace of Base – Don’t Turn Around','Ingvar Oldsberg tappar bort sig i en direktsändning']},
+ {n:6,img:'7',cat:'INTERNET',banner:'flest vänner?',prompt:'Vem hade skrapat ihop flest Facebook-vänner?',type:'radio',options:['Nilla','Linnea']},
+ {n:7,img:'8',cat:'INTERNET',banner:'allas första vän',prompt:'På MySpace var samma kille förvald som allas allra första vän. Vad hette han?',type:'radio',options:['Tom','Mark','Chad','Kevin']},
+ {n:8,img:'9',cat:'INTERNET',banner:'vilket är ett gbg-band?',prompt:'Vilken av sladdarna är också namnet på ett band ur det legendariska Service-bolagets katalog?',type:'radio',letters:true,options:['A','B','C','D']},
+ {n:9,img:'10',cat:'VISSELBLÅSARE',banner:'det visslas!',prompt:'Fem låtar där det visslas.',type:'songs',fields:['A','B','C','D','E']},
+ {n:10,img:'11',cat:'INDIESKANDALER',banner:'ullevi 2014',prompt:'Vad fick Alice B och gästartisterna (Freddie Wadling, Carl-Einar Häckner) i ersättning efter Håkans Ullevi-konsert?',type:'radio',options:['500 kr i bensinpengar','5 000 kr i symboliskt gage','En back öl','Gratis backstagepass nästa år']},
+ {n:11,img:'12',cat:'INDIESKANDALER',banner:'vilka slogs The Embassy med?',prompt:'2006 rök The Embassy ihop med ett annat band på Trädgår’n – och drog på sig en "fatwa" från The Tough Alliance. Vilket band?',type:'text',ph:'Bandets namn'},
+ {n:12,img:'13',cat:'INDIESKANDALER',banner:'vad jobbar Martin som?',prompt:'Vad har Martin Elisson (Bad Cash Quartet) utbildat sig till och arbetar som idag?',type:'text',ph:'Yrke'},
+ {n:13,img:'14',cat:'COVER NR 2',banner:'vad heter originalet?',prompt:'Lyssna på covern. Vad heter originalet – grupp/artist + låttitel?',type:'fields',fields:['Artist / grupp','Låttitel']},
+ {n:14,img:'15',cat:'GISSA BANDEN',banner:'gissa banden',prompt:'Nilla & Linnet gestaltar tre kända duos/band (A–C). Vilka?',type:'fields',fields:['A','B','C'],ph:'Bandets namn'},
+ {n:15,img:'16',cat:'INDIE',banner:'vad var det reklam för?',prompt:'José González akustiska cover av The Knifes "Heartbeats" (2005) blev megakänd via en reklamfilm med 250 000 studsbollar. Vad var det reklam för?',type:'radio',options:['En TV (Sony Bravia)','En bil (Honda)','Ett flygbolag (Virgin Atlantic)','Ett bredband (Telia)']},
+ {n:16,img:'17',cat:'NYORD',banner:'vilka tre är riktiga?',prompt:'Tre av orden är äkta nyord från 00-talet, resten är påhittade. Välj de tre riktiga.',type:'multi',pick:3,instr:'Vilka TRE ord är riktiga nyord? Välj tre.',options:['Polyfoni-pappa','Mobilblottare','”Svenna sitt liv”','Plastfika','Bredbands-frossa','Studsmattesjuka','Tumbloggare','Vibrations-vandal']},
+ {n:17,img:'18',cat:'COVER NR 3',banner:'vad heter originalet?',prompt:'Lyssna på covern. Vad heter originalet – grupp/artist + låttitel?',type:'fields',fields:['Artist / grupp','Låttitel']},
+ {n:18,img:'19',cat:'90- / 00- / 10-TAL',banner:'vilket årtionde?',prompt:'Vilket år eller årtionde hände det?',type:'dating',note:'Rätt årtionde = +1 p · rätt exakt år = +3 p · fel år = −3 p. Ni måste INTE gissa exakt år – då riskerar ni inga minuspoäng.',fields:['The Sims (första spelet) släpps','Spotify lanseras','Håkan: cover av Almedals ”Och alla platserna” på Liseberg','Solsidan (premiär)','Håkan spelar med Broder Daniel sista gången','Bitcoin skapas','Netflix grundas','Dejtingappen Tinder lanseras','BK Häcken tar ”det stora silvret” första gången','Kirsten Dunst på Da Matteo → Jens Lekman skriver en låt']},
+];
+
+const MANUS = {
+ 1:{say:`Med sommarens entré är det dags för glass! Vilken GB-glass blev 2005 så omdiskuterad att det skrevs spaltmeter om den – trots att det "bara" var en glass? Kritikerna ville att den skulle byta namn, men GB vägrade. Vilken glass?`,
+    ans:`Nogger Black.`},
+ 2:{say:`Vad kostade en Piggelin 1986? Skriv pris i kronor och ören – ni får rätt om ni är max en krona ifrån.`,
+    ans:`2,70 kr (rätt om de är inom en krona).`},
+ 3:{say:`Ben & Jerry's kom till Sverige i mitten av 00-talet. På bilden ser ni fyra smaker, A–D. Vad heter de fyra smakerna?`,
+    ans:`Phish Food, Peanut Butter Cup, Half Baked och Chocolate Fudge Brownie. (Matcha mot rätt burk A–D.)`},
+ 4:{say:`Cover nummer 1. Lyssna på låten – vad heter originalet? Alltså artist och låttitel.`,
+    ans:`The Strokes – "Last Nite".`},
+ 5:{say:`Daniel Johansson, känd som "Rosa Mannen", är en svensk internetlegend från Trollhättantrakten som laddat upp gamla tv-klipp från sin enorma VHS-samling på YouTube – en flitig festival- och krogfigur som blev lokal myt långt innan nätet visste vem han var. Vilket av hans klipp är absolut mest sett?`,
+    ans:`Ace of Base – "Don't Turn Around", från Fröken Sverige-galan 1994.`},
+ 6:{say:`Facebook handlade i grunden om att samla vänner – ju fler desto bättre, åtminstone om man frågade en tonåring runt 2008. Vem av Nilla och Linnea hade skrapat ihop flest Facebook-vänner?`,
+    ans:`Nilla – 353 vänner mot Linneas 123, alltså 230 fler.`},
+ 7:{say:`MySpace var indiebandens viktigaste sajt i mitten av 00-talet, där alla rankade sina vänner i en "Top 8". När man skapade ett konto hade man redan en vän från start – samma kille för alla, förvald. Han blev typ hela internets första vän. Vad hette han?`,
+    ans:`Tom (Tom Anderson), en av MySpace grundare.`},
+ 8:{say:`Från internet till Göteborgs indiehistoria. På bilden ser ni fyra sladdar, A–D. Vilken av sladdarna är också namnet på ett band som låg på det legendariska skivbolaget Service?`,
+    ans:`D – CAT5 (nätverkskabeln).`},
+ 9:{say:`Visselblåsare! 2002 utsåg tidningen Time "Visselblåsaren" till Person of the Year, med tre kvinnor på omslaget – bland annat kopplat till en FBI-skandal och Enron-affären. På tal om visselblåsare – nu spelar vi ett gäng låtar där det visslas. Skriv artist/grupp och låttitel för A–E. (En poäng per rätt artist och en per rätt låt.)`,
+    ans:`A: Scorpions – "Wind of Change" · B: Peter Bjorn and John – "Young Folks" · C: Otis Redding – "(Sittin' On) The Dock of the Bay" · D: Kent – "Dom andra" · E: The Bangles – "Walk Like an Egyptian".`},
+ 10:{say:`Sommaren 2014 bjöd Håkan Hellström in stjärnskottet Alice B att spela på sin gigantiska Ullevi-konsert, som drog in runt 30 miljoner kronor bara i publikintäkter. Senare uppdagades att gästartisterna fick dålig lön, och Alice B lade ut sitt nummer på Facebook med en uppmaning till Håkan att "swisha över pengarna". Vad var ersättningen hon och gästartisterna Freddie Wadling och Carl-Einar Häckner faktiskt fick?`,
+    ans:`En back öl.`},
+ 11:{say:`2006 hamnade The Embassy i ett numera legendariskt krogslagsmål på Trädgår'n med ett annat svenskt band – kaoset eskalerade så pass att en drinkblandare ska ha flugit fram och använts som tillhygge. Som hämnd utfärdade vännerna i The Tough Alliance en officiell "fatwa" mot det andra bandet, med en koreansk skivutgåva och en armbindel som belöning. Vilket kaxigt band var det The Embassy bråkade med?`,
+    ans:`The Sounds.`},
+ 12:{say:`The Embassys ena halva, Torbjörn Håkansson, jobbar med kanske det mest ur-göteborgska yrket som finns – spårvagnsförare. På tal om det: sångaren Martin Elisson från Bad Cash Quartet, med sin sluddriga göteborgssång, vad har han utbildat sig till och arbetar som idag?`,
+    ans:`Logoped.`},
+ 13:{say:`Cover nummer 2. Vad heter originalet? Artist och låttitel.`,
+    ans:`Yeah Yeah Yeahs – "Maps".`},
+ 14:{say:`Nilla och Linnet som duos! På bilderna A–C gestaltar de tre kända band/duos. Vilka är de?`,
+    ans:`A: The Knife · B: The White Stripes · C: The Tough Alliance.`},
+ 15:{say:`José González akustiska cover av The Knifes "Heartbeats" blev megakänd 2005 via en mycket snygg reklamfilm med över 250 000 studsbollar. Men vad var det egentligen reklam för?`,
+    ans:`En TV – Sony Bravia. Poängen var att visa tv:ns färgåtergivning, därav de 250 000 färgglada bollarna.`},
+ 16:{say:`Nyord eller påhittat? Av de åtta orden är tre äkta nyord från 00-talet, resten är påhittade. Vilka tre är riktiga?`,
+    ans:`2. Mobilblottare, 3. "Svenna sitt liv" och 6. Studsmattesjuka.`},
+ 17:{say:`Cover nummer 3. Vad heter originalet? Artist och låttitel.`,
+    ans:`Vapnet – "Kalla mig CP".`},
+ 18:{say:`90-tal, 00-tal eller 10-tal? Här kan ni gambla. Rätt årtionde ger 1 poäng, rätt exakt år ger 3 poäng – men skriver ni fel år får ni minus 3. Ni måste inte gissa exakt år.`,
+    ans:`The Sims (första spelet): 2000 · Spotify lanseras: 2008 · Håkan-cover av Almedals "Och alla platserna" på Liseberg: 2007 · Solsidan (premiär): 2010 · Håkan med Broder Daniel sista gången: 2001 · Bitcoin skapas: 2009 · Netflix grundas: 1997 · Tinder lanseras: 2012 · BK Häcken "det stora silvret" första gången: 2012 · Kirsten Dunst på Da Matteo → Jens Lekman-låt: 2011.`}
+};
+
+const DECADES=['90-tal','00-tal','10-tal'];
+const YEARS=(()=>{const a=[];for(let y=1995;y<=2015;y++)a.push(String(y));return a;})();
+function opt(v,sel){return '<option value="'+v+'"'+(sel===v?' selected':'')+'>'+(v===''?'—':v)+'</option>';}
+function decadeOpts(cur){return opt('',cur)+DECADES.map(d=>opt(d,cur)).join('');}
+function yearOpts(cur){return opt('',cur)+YEARS.map(y=>opt(y,cur)).join('');}
+
+const state = { team:'', idx:-1, answers:{}, grades:{}, screen:null };
+const app = document.getElementById('app');
+const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function masthead(size){
+  return '<div class="masthead '+size+'"><span class="star">★</span>'+
+         '<div class="ml">Nilla och</div><div class="ml">Linnet <span class="gold">40 år</span></div></div>';
+}
+
+function render(){
+  if(state.screen==='code'){ renderCode(); }
+  else if(state.screen==='backstage'){ renderBackstage(); }
+  else if(state.idx<0){ renderWelcome(); }
+  else if(state.idx>=Q.length){ renderSummary(); }
+  else { renderQuestion(); }
+  window.scrollTo(0,0);
+}
+
+function renderWelcome(){
+  app.innerHTML =
+    masthead('lg')+
+    '<div class="welcome-sub">indiequiz (och lite annat)</div>'+
+    (IMAGES['1']?'<div class="photo"><span class="tape"></span><img src="'+IMAGES['1']+'" alt=""></div>':'')+
+    '<div class="sticker">musik!<br>minnen!<br>nörderi!</div>'+
+    '<div class="intro"><b>Quizmastern läser upp frågorna</b> – här fyller ni bara i era svar, en fråga i taget. '+
+    'Vänta alltid tills quizmastern säger till innan ni går vidare. '+
+    'Inga rätta svar visas här – i slutet får ni en <b>sammanfattning av era svar</b> som ni rättar tillsammans.</div>'+
+    '<div class="field"><label>Lagnamn</label><input type="text" id="teamInput" placeholder="Skriv ert lagnamn" value="'+esc(state.team)+'"></div>'+
+    '<div class="nav"><button class="btn primary full" id="startBtn">Starta quizet →</button></div>'+
+    '<div class="qmaster" id="qmaster">Quizmastern</div>';
+  const ti=document.getElementById('teamInput');
+  ti.addEventListener('input',e=>state.team=e.target.value);
+  document.getElementById('startBtn').addEventListener('click',()=>{
+    if(!state.team.trim()){ ti.style.borderColor='var(--maroon)'; ti.focus(); ti.placeholder='Skriv ert lagnamn först!'; return; }
+    state.idx=0; render();
+  });
+  let qtaps=0,qtimer=null;
+  document.getElementById('qmaster').addEventListener('click',()=>{
+    qtaps++; clearTimeout(qtimer); qtimer=setTimeout(()=>{qtaps=0;},1500);
+    if(qtaps>=3){ qtaps=0; state.screen='code'; render(); }
+  });
+}
+
+function renderQuestion(){
+  const q=Q[state.idx];
+  const pct=Math.round((state.idx)/Q.length*100);
+  let html=
+    masthead('sm')+
+    '<div class="progress"><span>FRÅGA '+q.n+' / '+Q.length+'</span><span class="cat">'+esc(q.cat)+'</span></div>'+
+    '<div class="pbar"><i style="width:'+pct+'%"></i></div>'+
+    (IMAGES[q.img]?'<div class="photo"><span class="tape"></span><img src="'+IMAGES[q.img]+'" alt=""></div>':'')+
+    (q.note?'<div class="note" style="margin:6px 4px 14px">'+esc(q.note)+'</div>':'');
+
+  const a=state.answers[state.idx];
+
+  if(q.type==='text'){
+    html+='<div class="field"><input type="text" id="ans" placeholder="'+esc(q.ph||'Ert svar')+'" value="'+esc(a||'')+'"></div>';
+  }
+  else if(q.type==='fields'){
+    q.fields.forEach((f,j)=>{
+      const val=(a&&a[j])||'';
+      const short=f.length<=2;
+      if(short){
+        html+='<div class="fieldrow"><span class="tag">'+esc(f)+'</span><input type="text" data-j="'+j+'" class="ans" placeholder="'+esc(q.ph||'')+'" value="'+esc(val)+'"></div>';
+      }else{
+        html+='<div class="field"><label>'+esc(f)+'</label><input type="text" data-j="'+j+'" class="ans" placeholder="'+esc(q.ph||'')+'" value="'+esc(val)+'"></div>';
+      }
+    });
+  }
+  else if(q.type==='songs'){
+    q.fields.forEach((f,j)=>{
+      const o=(a&&a[j])||{a:'',l:''};
+      html+='<div class="song"><div class="shead"><span class="stag">'+esc(f)+'</span></div>'+
+        '<div class="sgrid">'+
+          '<input type="text" data-j="'+j+'" data-k="a" class="ans" placeholder="Artist / grupp" value="'+esc(o.a||'')+'">'+
+          '<input type="text" data-j="'+j+'" data-k="l" class="ans" placeholder="Låttitel" value="'+esc(o.l||'')+'">'+
+        '</div></div>';
+    });
+  }
+  else if(q.type==='dating'){
+    html+='<div class="dating">';
+    q.fields.forEach((f,j)=>{
+      const o=(a&&a[j])||{d:'',y:''};
+      html+='<div class="ditem"><div class="dlbl">'+esc(f)+'</div><div class="dgrid">'+
+        '<div><label>Årtionde</label><select data-j="'+j+'" data-k="d" class="ans">'+decadeOpts(o.d||'')+'</select></div>'+
+        '<div><label>Exakt år (frivilligt)</label><select data-j="'+j+'" data-k="y" class="ans">'+yearOpts(o.y||'')+'</select></div>'+
+      '</div></div>';
+    });
+    html+='</div>';
+  }
+  else if(q.type==='radio'){
+    if(q.letters){
+      html+='<div class="lettergrid">';
+      q.options.forEach((o,j)=>{
+        const sel=(a===j)?' sel':'';
+        html+='<div class="lt'+sel+'" data-j="'+j+'">'+esc(o)+'</div>';
+      });
+      html+='</div>';
+    }else{
+      q.options.forEach((o,j)=>{
+        const sel=(a===j)?' sel':'';
+        html+='<div class="choice'+sel+'" data-j="'+j+'"><span class="dot"></span><span>'+esc(o)+'</span></div>';
+      });
+    }
+  }
+  else if(q.type==='multi'){
+    const arr=Array.isArray(a)?a:[];
+    if(q.instr) html+='<div class="multiinstr">'+esc(q.instr)+'</div>';
+    html+='<div class="grid2">';
+    q.options.forEach((o,j)=>{
+      const sel=arr.includes(j)?' sel':'';
+      html+='<div class="chip'+sel+'" data-j="'+j+'"><span class="num">'+(j+1)+'</span><span>'+esc(o)+'</span></div>';
+    });
+    html+='</div><div class="pickhint">'+arr.length+' / '+q.pick+' valda</div>';
+  }
+
+  const last=state.idx===Q.length-1;
+  html+=
+    '<div class="wait">⏸ Vänta tills quizmastern säger till</div>'+
+    '<div class="nav">'+
+      '<button class="btn ghost" id="prevBtn">← Tillbaka</button>'+
+      '<button class="btn primary" id="nextBtn">'+(last?'Klar – visa svar':'Nästa →')+'</button>'+
+    '</div>';
+  app.innerHTML=html;
+
+  // wiring
+  if(q.type==='text'){
+    document.getElementById('ans').addEventListener('input',e=>state.answers[state.idx]=e.target.value);
+  }
+  else if(q.type==='fields'){
+    if(!Array.isArray(state.answers[state.idx])) state.answers[state.idx]=new Array(q.fields.length).fill('');
+    document.querySelectorAll('.ans').forEach(inp=>{
+      inp.addEventListener('input',e=>{ state.answers[state.idx][+e.target.dataset.j]=e.target.value; });
+    });
+  }
+  else if(q.type==='songs'){
+    if(!Array.isArray(state.answers[state.idx])) state.answers[state.idx]=q.fields.map(()=>({a:'',l:''}));
+    document.querySelectorAll('.ans').forEach(inp=>{
+      inp.addEventListener('input',e=>{ state.answers[state.idx][+e.target.dataset.j][e.target.dataset.k]=e.target.value; });
+    });
+  }
+  else if(q.type==='dating'){
+    if(!Array.isArray(state.answers[state.idx])) state.answers[state.idx]=q.fields.map(()=>({d:'',y:''}));
+    document.querySelectorAll('.ans').forEach(inp=>{
+      inp.addEventListener('change',e=>{ state.answers[state.idx][+e.target.dataset.j][e.target.dataset.k]=e.target.value; });
+    });
+  }
+  else if(q.type==='radio'){
+    document.querySelectorAll(q.letters?'.lt':'.choice').forEach(c=>{
+      c.addEventListener('click',()=>{ state.answers[state.idx]=+c.dataset.j; render(); });
+    });
+  }
+  else if(q.type==='multi'){
+    document.querySelectorAll('.chip').forEach(c=>{
+      c.addEventListener('click',()=>{
+        let arr=Array.isArray(state.answers[state.idx])?state.answers[state.idx].slice():[];
+        const j=+c.dataset.j; const k=arr.indexOf(j);
+        if(k>=0){ arr.splice(k,1); }
+        else { if(arr.length>=q.pick) return; arr.push(j); }
+        state.answers[state.idx]=arr; render();
+      });
+    });
+  }
+
+  document.getElementById('prevBtn').addEventListener('click',()=>{ state.idx--; render(); });
+  document.getElementById('nextBtn').addEventListener('click',()=>{ state.idx++; render(); });
+}
+
+function renderCode(){
+  app.innerHTML=masthead('sm')+
+    '<div class="multiinstr" style="margin-top:16px">🔒 Backstage – ange kod</div>'+
+    '<div class="field"><input type="password" id="codeInput" placeholder="Kod" autocomplete="off" autocapitalize="off" spellcheck="false"></div>'+
+    '<div id="codeErr" class="note" style="display:none;color:var(--maroon);margin:0 4px 12px">Fel kod – försök igen.</div>'+
+    '<div class="nav"><button class="btn ghost" id="codeCancel">← Avbryt</button><button class="btn primary" id="codeOk">Lås upp</button></div>';
+  const inp=document.getElementById('codeInput'); inp.focus();
+  const tryCode=()=>{
+    if(inp.value.trim()==='e4rdknfb'){ state.screen='backstage'; render(); }
+    else { document.getElementById('codeErr').style.display='block'; inp.value=''; inp.focus(); }
+  };
+  document.getElementById('codeOk').addEventListener('click',tryCode);
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter') tryCode(); });
+  document.getElementById('codeCancel').addEventListener('click',()=>{ state.screen=null; render(); });
+}
+
+function renderBackstage(){
+  let html=masthead('sm')+
+    '<div class="bshead">★ BACKSTAGE · QUIZMANUS ★</div>'+
+    '<div class="multiinstr" style="margin-bottom:14px">Ditt fullständiga manus och facit – bara för dig.</div>';
+  Q.forEach(q=>{
+    const m=MANUS[q.n]||{};
+    html+='<div class="bsitem">'+
+      '<div class="sq" style="margin-bottom:6px">FRÅGA '+q.n+' · '+esc(q.cat)+'</div>'+
+      (IMAGES[q.img]?'<img class="bsimg" src="'+IMAGES[q.img]+'" alt="">':'')+
+      '<div class="bslabel">Säg:</div><div class="bssay">'+esc(m.say||'')+'</div>'+
+      '<div class="bslabel">Facit:</div><div class="bsfac">'+esc(m.ans||'')+'</div>'+
+    '</div>';
+  });
+  html+='<div class="nav"><button class="btn primary full" id="bsBack">← Tillbaka till quizet</button></div>';
+  app.innerHTML=html;
+  document.getElementById('bsBack').addEventListener('click',()=>{ state.screen=null; render(); });
+}
+
+function buildText(){
+  const out=['NILLA OCH LINNET 40 ÅR – '+(state.team||'Laget'),'Totalpoäng: '+totalScore(),''];
+  Q.forEach((q,i)=>{
+    out.push('FRÅGA '+q.n+' · '+q.cat);
+    buildLines(i).forEach(l=>{
+      const g=state.grades[l.key]; let mark;
+      if(l.kind==='year'){ mark=g==='y3'?'[+3]':g==='y1'?'[+1]':g==='yf'?'[-3]':'[ 0]'; }
+      else { mark=g==='r'?'[RATT]':g==='f'?'[FEL ]':'[ ?  ]'; }
+      out.push('  '+mark+' '+(l.label?l.label+': ':'')+(l.val||'—'));
+    });
+    out.push('');
+  });
+  return out.join('\n');
+}
+
+function buildLines(qi){
+  const q=Q[qi]; const a=state.answers[qi]; const lines=[];
+  const norm=(label,val)=>({key:qi+'_'+lines.length, kind:'normal', label:label, val:(val||'').trim()});
+  if(q.type==='text'){ lines.push(norm(null,a)); }
+  else if(q.type==='radio'){
+    const v=(a!=null&&q.options[a]!=null)?(q.letters?('Alternativ '+q.options[a]):q.options[a]):'';
+    lines.push(norm(null,v));
+  }
+  else if(q.type==='multi'){
+    let v=''; if(Array.isArray(a)&&a.length){ v=a.slice().sort((x,y)=>x-y).map(j=>(j+1)+'. '+q.options[j]).join('   '); }
+    lines.push(norm(null,v));
+  }
+  else if(q.type==='fields'){
+    q.fields.forEach((f,j)=>lines.push(norm(f, a&&a[j])));
+  }
+  else if(q.type==='songs'){
+    q.fields.forEach((f,j)=>{
+      const o=(a&&a[j])||{};
+      lines.push(norm(f+' · Artist', o.a));
+      lines.push(norm(f+' · Låt', o.l));
+    });
+  }
+  else if(q.type==='dating'){
+    q.fields.forEach((f,j)=>{
+      const o=(a&&a[j])||{};
+      const parts=[];
+      if((o.d||'').trim()) parts.push('Årtionde: '+o.d.trim());
+      if((o.y||'').trim()) parts.push('År: '+o.y.trim());
+      lines.push({key:qi+'_d'+j, kind:'year', label:f, val:parts.join(' · ')});
+    });
+  }
+  return lines;
+}
+
+function scoreFor(l){
+  const g=state.grades[l.key];
+  if(l.kind==='year'){ if(g==='y3')return 3; if(g==='y1')return 1; if(g==='yf')return -3; return 0; }
+  return g==='r'?1:0;
+}
+function totalScore(){ let s=0; Q.forEach((q,i)=>buildLines(i).forEach(l=>{ s+=scoreFor(l); })); return s; }
+function gb(key,v,cls,cur,label){ return '<button class="gbtn '+cls+(cur===v?' on':'')+'" data-key="'+key+'" data-v="'+v+'">'+label+'</button>'; }
+
+function renderSummary(){
+  let html=masthead('sm')+
+    '<div class="progress"><span>KLART!</span><span class="cat">'+(esc(state.team)||'Laget')+'</span></div>'+
+    '<div class="scorebox">Totalpoäng: <span id="scoreVal">'+totalScore()+'</span></div>'+
+    '<div class="multiinstr" style="font-size:15px;margin-bottom:14px">Rätta tillsammans – markera varje svar rätt eller fel.</div>';
+  Q.forEach((q,i)=>{
+    const lines=buildLines(i);
+    html+='<div class="sumitem"><div class="sq" style="margin-bottom:6px">FRÅGA '+q.n+' · '+esc(q.cat)+'</div>';
+    lines.forEach(l=>{
+      const g=state.grades[l.key]||'';
+      const lab=l.label?'<span class="lbl">'+esc(l.label)+':</span> ':'';
+      const txt=l.val?(lab+esc(l.val)):(lab+'— inget svar —');
+      let btns='<div class="gbtns">';
+      if(l.kind==='year'){ btns+=gb(l.key,'y3','pos',g,'+3')+gb(l.key,'y1','pos',g,'+1')+gb(l.key,'yf','neg',g,'−3'); }
+      else { btns+=gb(l.key,'r','pos',g,'Rätt')+gb(l.key,'f','neg',g,'Fel'); }
+      btns+='</div>';
+      html+='<div class="graderow"><div class="ga'+(l.val?'':' empty')+'">'+txt+'</div>'+btns+'</div>';
+    });
+    html+='</div>';
+  });
+  html+='<div class="sumnote">Årtals-rundan (fråga 18): +3 rätt år · +1 rätt årtionde · −3 fel år.</div>'+
+    '<div class="nav"><button class="btn ghost" id="editBtn">← Ändra svar</button>'+
+    '<button class="btn primary" id="copyBtn">Kopiera resultat</button></div>'+
+    '<div class="nav" style="margin-top:10px"><button class="btn ghost" id="printBtn">Skriv ut / PDF</button>'+
+    '<button class="btn ghost" id="resetBtn">Börja om</button></div>'+
+    '<textarea id="exportTa" class="exportta" readonly></textarea>';
+  app.innerHTML=html;
+  app.querySelectorAll('.gbtn').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const key=b.dataset.key, v=b.dataset.v;
+      if(state.grades[key]===v) delete state.grades[key]; else state.grades[key]=v;
+      b.parentElement.querySelectorAll('.gbtn').forEach(x=>x.classList.toggle('on', state.grades[key]===x.dataset.v));
+      document.getElementById('scoreVal').textContent=totalScore();
+    });
+  });
+  const ta=document.getElementById('exportTa');
+  document.getElementById('editBtn').addEventListener('click',()=>{ state.idx=Q.length-1; render(); });
+  document.getElementById('copyBtn').addEventListener('click',()=>{
+    const txt=buildText(); ta.value=txt; ta.style.display='block';
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).catch(()=>{}); } }catch(e){}
+    try{ ta.focus(); ta.select(); document.execCommand&&document.execCommand('copy'); }catch(e){}
+    document.getElementById('copyBtn').textContent='Kopierat! (annars markera texten)';
+  });
+  document.getElementById('printBtn').addEventListener('click',()=>{
+    try{ window.print(); }catch(e){ ta.value=buildText(); ta.style.display='block'; }
+  });
+  let resetArmed=false;
+  const rb=document.getElementById('resetBtn');
+  rb.addEventListener('click',()=>{
+    if(!resetArmed){ resetArmed=true; rb.textContent='Säker? Tryck igen'; setTimeout(()=>{resetArmed=false; if(document.body.contains(rb)) rb.textContent='Börja om';},2500); return; }
+    state.idx=-1; state.answers={}; state.grades={}; render();
+  });
+}
+
+render();
+</script>
+</body>
+</html>
