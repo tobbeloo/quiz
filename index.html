@@ -310,6 +310,32 @@
   .bslabel{font-family:var(--marker);font-size:13px;color:var(--maroon-2);margin:8px 0 2px;}
   .bssay{font-size:15px;line-height:1.45;}
   .bsfac{font-size:15px;font-weight:700;color:var(--teal);line-height:1.4;}
+  .navnums{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:6px 2px 12px;}
+  .navnum{width:30px;height:30px;display:flex;align-items:center;justify-content:center;font-family:var(--body);font-weight:700;font-size:13px;border:2px solid var(--ink);border-radius:5px;background:var(--cream-2);color:var(--ink);cursor:pointer;}
+  .navnum.cur{background:var(--maroon);color:var(--cream-2);border-color:var(--maroon-2);}
+  .navnum.lock{opacity:.32;cursor:default;border-style:dashed;}
+  .modal-ov{position:fixed;inset:0;z-index:50;background:rgba(20,12,6,.6);display:flex;align-items:center;justify-content:center;padding:24px;}
+  .modal{background:var(--cream-2);border:3px solid var(--ink);border-radius:6px;max-width:380px;width:100%;padding:20px 18px;box-shadow:6px 8px 0 rgba(40,20,8,.35);}
+  .modal-t{font-family:var(--slab);font-size:20px;line-height:1.15;margin-bottom:6px;}
+  .modal-b{font-size:14px;color:var(--maroon-2);margin-bottom:14px;}
+  .modal-btns{display:flex;flex-direction:column;gap:9px;}
+  .modal-btns .btn{width:100%;}
+  .corrhint{font-family:var(--marker);font-size:13px;color:var(--maroon-2);margin:0 2px 8px;}
+  .faclabel{font-family:var(--marker);text-align:center;color:var(--teal);font-size:16px;margin:16px 0 6px;letter-spacing:.5px;}
+  .facbox{background:#0f2e2e;color:#eafaf4;border:2px solid var(--teal);border-radius:4px;padding:13px 15px;box-shadow:3px 4px 0 rgba(40,20,8,.25);}
+  .facsingle{font-size:17px;font-weight:700;line-height:1.4;}
+  .faclist{margin:0;padding-left:20px;}
+  .faclist li{font-size:15.5px;font-weight:600;line-height:1.5;}
+  .bsaudio,.facbox .bsaudio{display:block;width:100%;margin-top:10px;}
+  .resrow{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--cream-2);border:2px solid var(--ink);border-radius:3px;padding:9px 13px;margin:0 2px 7px;font-size:14px;box-shadow:2px 2px 0 rgba(40,20,8,.12);}
+  .resrow .respts{font-family:var(--slab);color:var(--maroon);flex:0 0 auto;}
+  .bighero{font-family:var(--slab);text-align:center;font-size:clamp(30px,9vw,46px);color:var(--maroon);margin:18px 0 4px;transform:rotate(-1.5deg);}
+  .bsextra{margin:4px 0 0;padding-left:18px;}
+  .bsextra li{font-size:13.5px;line-height:1.45;margin-bottom:5px;}
+  .pricewrap{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 2px;}
+  .pricewrap label{display:block;font-family:var(--marker);font-size:14px;color:var(--maroon-2);margin-bottom:4px;}
+  .priceinp{width:100%;font-family:var(--body);font-size:18px;color:var(--ink);background:var(--cream-2);border:2px solid var(--ink);border-radius:2px;padding:11px 12px;box-shadow:2px 2px 0 rgba(40,20,8,.15);}
+  .priceinp:focus{outline:none;border-color:var(--gold-deep);box-shadow:2px 2px 0 var(--gold);}
 </style>
 </head>
 <body>
@@ -322,7 +348,7 @@ const IMAGES = {"1": "1%20-%20stor.jpeg", "2": "2%20-%20stor.jpeg", "3": "3%20-%
 
 const Q = [
  {n:1,img:'2',cat:'GLASS',banner:'sommarglassen',prompt:'Vilken GB-glass blev 2005 så omdiskuterad att kritikerna ville byta namn på den – trots att det "bara" var en glass?',type:'text',ph:'Glassens namn'},
- {n:2,img:'3',cat:'GLASS',banner:'priskoll',prompt:'Vad kostade en Piggelin 1986?',type:'text',ph:'Pris i kr och ören',note:'Skriv pris i kr och ören. Rätt om ni är max en krona ifrån.'},
+ {n:2,img:'3',cat:'GLASS',banner:'priskoll',prompt:'Vad kostade en Piggelin 1986?',type:'price',note:'Fyll i kronor och ören. Rätt om ni är inom en krona.'},
  {n:3,img:'4',cat:'GLASS',banner:'gissa glassarna',prompt:'Ben & Jerry’s introducerades i Sverige i mitten av 00-talet. Vad heter de fyra smakerna?',type:'fields',fields:['A','B','C','D'],ph:'Smakens namn'},
  {n:4,img:'5',cat:'COVER NR 1',banner:'vad heter originalet?',prompt:'Lyssna på covern. Vad heter originalet – grupp/artist + låttitel?',type:'fields',fields:['Artist / grupp','Låttitel']},
  {n:5,img:'6',cat:'INTERNET',banner:'rosa mannen',prompt:'Daniel "Rosa Mannen" Johansson laddade upp gamla tv-klipp på YouTube. Vilket av hans klipp är absolut mest sett?',type:'radio',options:['Ett avsnitt av Björnes magasin (1987)','En Gevalia-reklam från 90-talet','Ace of Base – Don’t Turn Around','Ingvar Oldsberg tappar bort sig i en direktsändning']},
@@ -345,13 +371,14 @@ const MANUS = {
  1:{say:`Med sommarens entré är det dags för glass! Vilken GB-glass blev 2005 så omdiskuterad att det skrevs spaltmeter om den – trots att det "bara" var en glass? Kritikerna ville att den skulle byta namn, men GB vägrade. Vilken glass?`,
     ans:`Nogger Black.`},
  2:{say:`Vad kostade en Piggelin 1986? Skriv pris i kronor och ören – ni får rätt om ni är max en krona ifrån.`,
-    ans:`2,70 kr (rätt om de är inom en krona).`},
+    ans:`2,70 kr (2 kr 70 öre). Godkänt: 1,70–3,70 kr, alltså inom en krona.`},
  3:{say:`Ben & Jerry's kom till Sverige i mitten av 00-talet. På bilden ser ni fyra smaker, A–D. Vad heter de fyra smakerna?`,
-    ans:`Phish Food, Peanut Butter Cup, Half Baked och Chocolate Fudge Brownie. (Matcha mot rätt burk A–D.)`},
+    ans:[`A: Phish Food`,`B: Peanut Butter Cup`,`C: Half Baked`,`D: Chocolate Fudge Brownie`]},
  4:{say:`Cover nummer 1. Lyssna på låten – vad heter originalet? Alltså artist och låttitel.`,
-    ans:`The Strokes – "Last Nite".`},
- 5:{say:`Daniel Johansson, känd som "Rosa Mannen", är en svensk internetlegend från Trollhättantrakten som laddat upp gamla tv-klipp från sin enorma VHS-samling på YouTube – en flitig festival- och krogfigur som blev lokal myt långt innan nätet visste vem han var. Vilket av hans klipp är absolut mest sett?`,
-    ans:`Ace of Base – "Don't Turn Around", från Fröken Sverige-galan 1994.`},
+    ans:`The Strokes – "Last Nite".`,
+    audio:`last%20night%20strokes.mp3`},
+ 5:{say:`Daniel Johansson, känd som "Rosa Mannen", är en svensk internetlegend från Trollhättantrakten som laddat upp gamla tv-klipp från sin enorma VHS-samling på YouTube – en flitig festival- och krogfigur som blev lokal myt långt innan nätet visste vem han var. Vilket av hans klipp är absolut mest sett? Det mest sedda har faktiskt runt 1,5 miljoner visningar.`,
+    ans:`Ace of Base – "Don't Turn Around", från Fröken Sverige-galan 1994. Klippet har runt 1,5 miljoner visningar.`},
  6:{say:`Facebook handlade i grunden om att samla vänner – ju fler desto bättre, åtminstone om man frågade en tonåring runt 2008. Vem av Nilla och Linnea hade skrapat ihop flest Facebook-vänner?`,
     ans:`Nilla – 353 vänner mot Linneas 123, alltså 230 fler.`},
  7:{say:`MySpace var indiebandens viktigaste sajt i mitten av 00-talet, där alla rankade sina vänner i en "Top 8". När man skapade ett konto hade man redan en vän från start – samma kille för alla, förvald. Han blev typ hela internets första vän. Vad hette han?`,
@@ -359,7 +386,8 @@ const MANUS = {
  8:{say:`Från internet till Göteborgs indiehistoria. På bilden ser ni fyra sladdar, A–D. Vilken av sladdarna är också namnet på ett band som låg på det legendariska skivbolaget Service?`,
     ans:`D – CAT5 (nätverkskabeln).`},
  9:{say:`Visselblåsare! 2002 utsåg tidningen Time "Visselblåsaren" till Person of the Year, med tre kvinnor på omslaget – bland annat kopplat till en FBI-skandal och Enron-affären. På tal om visselblåsare – nu spelar vi ett gäng låtar där det visslas. Skriv artist/grupp och låttitel för A–E. (En poäng per rätt artist och en per rätt låt.)`,
-    ans:`A: Scorpions – "Wind of Change" · B: Peter Bjorn and John – "Young Folks" · C: Otis Redding – "(Sittin' On) The Dock of the Bay" · D: Kent – "Dom andra" · E: The Bangles – "Walk Like an Egyptian".`},
+    ans:[`A: Scorpions – "Wind of Change"`,`B: Peter Bjorn and John – "Young Folks"`,`C: Otis Redding – "(Sittin' On) The Dock of the Bay"`,`D: Kent – "Dom andra"`,`E: The Bangles – "Walk Like an Egyptian"`],
+    audio:`visslar%20ljud.wav`},
  10:{say:`Sommaren 2014 bjöd Håkan Hellström in stjärnskottet Alice B att spela på sin gigantiska Ullevi-konsert, som drog in runt 30 miljoner kronor bara i publikintäkter. Senare uppdagades att gästartisterna fick dålig lön, och Alice B lade ut sitt nummer på Facebook med en uppmaning till Håkan att "swisha över pengarna". Vad var ersättningen hon och gästartisterna Freddie Wadling och Carl-Einar Häckner faktiskt fick?`,
     ans:`En back öl.`},
  11:{say:`2006 hamnade The Embassy i ett numera legendariskt krogslagsmål på Trädgår'n med ett annat svenskt band – kaoset eskalerade så pass att en drinkblandare ska ha flugit fram och använts som tillhygge. Som hämnd utfärdade vännerna i The Tough Alliance en officiell "fatwa" mot det andra bandet, med en koreansk skivutgåva och en armbindel som belöning. Vilket kaxigt band var det The Embassy bråkade med?`,
@@ -367,18 +395,70 @@ const MANUS = {
  12:{say:`The Embassys ena halva, Torbjörn Håkansson, jobbar med kanske det mest ur-göteborgska yrket som finns – spårvagnsförare. På tal om det: sångaren Martin Elisson från Bad Cash Quartet, med sin sluddriga göteborgssång, vad har han utbildat sig till och arbetar som idag?`,
     ans:`Logoped.`},
  13:{say:`Cover nummer 2. Vad heter originalet? Artist och låttitel.`,
-    ans:`Yeah Yeah Yeahs – "Maps".`},
+    ans:`Yeah Yeah Yeahs – "Maps".`,
+    audio:`maps%20yeayyeahyeahs.mp3`},
  14:{say:`Nilla och Linnet som duos! På bilderna A–C gestaltar de tre kända band/duos. Vilka är de?`,
-    ans:`A: The Knife · B: The White Stripes · C: The Tough Alliance.`},
+    ans:[`A: The Knife`,`B: The White Stripes`,`C: The Tough Alliance`]},
  15:{say:`José González akustiska cover av The Knifes "Heartbeats" blev megakänd 2005 via en mycket snygg reklamfilm med över 250 000 studsbollar. Men vad var det egentligen reklam för?`,
     ans:`En TV – Sony Bravia. Poängen var att visa tv:ns färgåtergivning, därav de 250 000 färgglada bollarna.`},
  16:{say:`Nyord eller påhittat? Av de åtta orden är tre äkta nyord från 00-talet, resten är påhittade. Vilka tre är riktiga?`,
-    ans:`2. Mobilblottare, 3. "Svenna sitt liv" och 6. Studsmattesjuka.`},
+    ans:[`2. Mobilblottare`,`3. "Svenna sitt liv"`,`6. Studsmattesjuka`],
+    extra:[`1. Polyfoni-pappa (PÅHITTAT) – äldre man som precis skaffat mobil med flerstämmiga ringsignaler och stolt spelar upp alla melodierna för folk i sin omgivning.`,`2. Mobilblottare (RIKTIGT) – person som via telefonen blottar hela sitt privatliv inför alla utan att skämmas det minsta, på bussen, kaféet eller var som helst.`,`3. "Svenna sitt liv" (RIKTIGT) – att ordna sitt liv så att det blir lika framgångsrikt som Sven-Göran Erikssons, framför allt genom att tänka positivt.`,`4. Plastfika (PÅHITTAT) – att fika digitalt via webbkamera istället för att ses på riktigt.`,`5. Bredbands-frossa (PÅHITTAT) – beteendet när ett hushåll precis fått fast bredband och laddar ner enorma mängder musik, film och spel dygnet runt, bara för att det går.`,`6. Studsmattesjuka (RIKTIGT) – studsmattan blev lika vanlig som grillen i svenska trädgårdar, och med den följde en rad studsmatterelaterade skador.`,`7. Tumbloggare (PÅHITTAT) – person som bara uppdaterar sin blogg via mobilen med korta, slarviga inlägg.`,`8. Vibrations-vandal (PÅHITTAT) – person på MSN Messenger som spammar "Skicka vibration" så motpartens skärm skakar och spelar ett irriterande ljud, bara för uppmärksamhet.`]},
  17:{say:`Cover nummer 3. Vad heter originalet? Artist och låttitel.`,
-    ans:`Vapnet – "Kalla mig CP".`},
+    ans:`Vapnet – "Kalla mig CP".`,
+    audio:`kalla%20mig%20cp%20vapnet.mp3`},
  18:{say:`90-tal, 00-tal eller 10-tal? Här kan ni gambla. Rätt årtionde ger 1 poäng, rätt exakt år ger 3 poäng – men skriver ni fel år får ni minus 3. Ni måste inte gissa exakt år.`,
-    ans:`The Sims (första spelet): 2000 · Spotify lanseras: 2008 · Håkan-cover av Almedals "Och alla platserna" på Liseberg: 2007 · Solsidan (premiär): 2010 · Håkan med Broder Daniel sista gången: 2001 · Bitcoin skapas: 2009 · Netflix grundas: 1997 · Tinder lanseras: 2012 · BK Häcken "det stora silvret" första gången: 2012 · Kirsten Dunst på Da Matteo → Jens Lekman-låt: 2011.`}
+    ans:[`The Sims (första spelet): 2000`,`Spotify lanseras: 2008`,`Håkan-cover av Almedals "Och alla platserna" på Liseberg: 2007`,`Solsidan (premiär): 2010`,`Håkan med Broder Daniel sista gången: 2001`,`Bitcoin skapas: 2009`,`Netflix grundas: 1997`,`Tinder lanseras: 2012`,`BK Häcken "det stora silvret" första gången: 2012`,`Kirsten Dunst på Da Matteo → Jens Lekman-låt: 2011`]}
 };
+
+// ===== facit (för autorättning) =====
+const KEY = {
+ 1:{text:['noggerblack']},
+ 2:{price:2.70, tol:1},
+ 3:{fields:[['phish'],['peanut'],['halfbaked','half'],['brownie','fudge']]},
+ 4:{fields:[['strokes'],['lastni']]},
+ 5:{radio:2}, 6:{radio:0}, 7:{radio:0}, 8:{radio:3},
+ 9:{songs:[{a:['scorpions'],l:['windofchange','windofchang']},{a:['peterbjorn','bjornandjohn'],l:['youngfolks']},{a:['otis'],l:['dockofthebay','dockof']},{a:['kent'],l:['domandra']},{a:['bangles'],l:['egyptian']}]},
+ 10:{radio:2}, 11:{text:['sounds']}, 12:{text:['logoped']},
+ 13:{fields:[['yeahyeah'],['maps']]},
+ 14:{fields:[['knife'],['whitestripes','stripes'],['toughalliance','tough']]},
+ 15:{radio:0}, 16:{multi:[1,2,5]},
+ 17:{fields:[['vapnet'],['kallamig']]},
+ 18:{dating:[{d:'00-tal',y:'2000'},{d:'00-tal',y:'2008'},{d:'00-tal',y:'2007'},{d:'10-tal',y:'2010'},{d:'00-tal',y:'2001'},{d:'00-tal',y:'2009'},{d:'90-tal',y:'1997'},{d:'10-tal',y:'2012'},{d:'10-tal',y:'2012'},{d:'10-tal',y:'2011'}]}
+};
+function norm(s){ return String(s==null?'':s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,''); }
+function matchAny(ans, accList){ if(!ans) return false; const n=norm(ans); return accList.some(x=>x && n.includes(x)); }
+function autoGrade(qi){
+  const q=Q[qi], a=state.answers[qi], k=KEY[q.n]||{}, g={};
+  if(q.type==='radio'){ if(typeof k.radio==='number' && a!=null) g[qi+'_0']=(a===k.radio)?'r':'f'; }
+  else if(q.type==='multi'){ if(k.multi){ const arr=Array.isArray(a)?a.slice().sort((x,y)=>x-y):[]; const cor=k.multi.slice().sort((x,y)=>x-y); g[qi+'_0']=(arr.length===cor.length&&arr.every((x,i)=>x===cor[i]))?'r':'f'; } }
+  else if(q.type==='text'){ if(k.num!=null){ const m=String(a==null?'':a).replace(',','.').match(/-?\d+(\.\d+)?/); g[qi+'_0']=(m&&Math.abs(parseFloat(m[0])-k.num)<=(k.tol||0))?'r':'f'; } else if(k.text){ g[qi+'_0']=matchAny(a,k.text)?'r':'f'; } }
+  else if(q.type==='price'){ if(k.price!=null){ const o=(a&&typeof a==='object')?a:{}; const kr=parseFloat(String(o.kr==null?'':o.kr).replace(',','.')); const ore=parseFloat(String(o.ore==null?'':o.ore).replace(',','.')); const hk=!isNaN(kr), ho=!isNaN(ore); if(hk||ho){ const val=(hk?kr:0)+(ho?ore:0)/100; g[qi+'_0']=Math.abs(val-k.price)<=(k.tol||0)?'r':'f'; } } }
+  else if(q.type==='fields'){ if(k.fields){ k.fields.forEach((acc,j)=>{ g[qi+'_'+j]=matchAny(a&&a[j],acc)?'r':'f'; }); } }
+  else if(q.type==='songs'){ if(k.songs){ k.songs.forEach((s,j)=>{ const o=(a&&a[j])||{}; g[qi+'_'+(2*j)]=matchAny(o.a,s.a)?'r':'f'; g[qi+'_'+(2*j+1)]=matchAny(o.l,s.l)?'r':'f'; }); } }
+  else if(q.type==='dating'){ if(k.dating){ k.dating.forEach((c,j)=>{ const o=(a&&a[j])||{}; const y=(o.y||'').trim(), d=(o.d||'').trim(); let v=null; if(y){ v=(y===c.y)?'y3':'yf'; } else if(d){ v=(d===c.d)?'y1':null; } if(v) g[qi+'_d'+j]=v; }); } }
+  return g;
+}
+function runAutoGrade(){ const all={}; Q.forEach((q,i)=>Object.assign(all, autoGrade(i))); state.grades=all; }
+
+function facitHTML(m){
+  if(!m||m.ans==null) return '';
+  if(Array.isArray(m.ans)) return '<ul class="faclist">'+m.ans.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>';
+  return '<div class="facsingle">'+esc(m.ans)+'</div>';
+}
+function audioHTML(m){ return (m&&m.audio)?'<audio class="bsaudio" controls preload="none" src="'+m.audio+'"></audio>':''; }
+function navNums(active, maxReached){
+  let s='<div class="navnums">';
+  for(let i=0;i<Q.length;i++){ const reached=i<=maxReached; s+='<span class="navnum'+(i===active?' cur':'')+(reached?'':' lock')+'" data-i="'+i+'">'+(i+1)+'</span>'; }
+  return s+'</div>';
+}
+function showModal(opts){
+  const ov=document.createElement('div'); ov.className='modal-ov';
+  ov.innerHTML='<div class="modal"><div class="modal-t">'+esc(opts.title)+'</div>'+(opts.body?'<div class="modal-b">'+esc(opts.body)+'</div>':'')+'<div class="modal-btns"></div></div>';
+  const bw=ov.querySelector('.modal-btns');
+  opts.buttons.forEach(b=>{ const btn=document.createElement('button'); btn.className='btn '+(b.cls||'ghost'); btn.textContent=b.label; btn.addEventListener('click',()=>{ if(ov.parentNode) document.body.removeChild(ov); if(b.onClick) b.onClick(); }); bw.appendChild(btn); });
+  document.body.appendChild(ov);
+}
 
 const DECADES=['90-tal','00-tal','10-tal'];
 const YEARS=(()=>{const a=[];for(let y=1995;y<=2015;y++)a.push(String(y));return a;})();
@@ -386,7 +466,7 @@ function opt(v,sel){return '<option value="'+v+'"'+(sel===v?' selected':'')+'>'+
 function decadeOpts(cur){return opt('',cur)+DECADES.map(d=>opt(d,cur)).join('');}
 function yearOpts(cur){return opt('',cur)+YEARS.map(y=>opt(y,cur)).join('');}
 
-const state = { team:'', idx:-1, answers:{}, grades:{}, screen:null };
+const state = { team:'', idx:-1, maxIdx:0, cidx:0, answers:{}, grades:{}, screen:null };
 const app = document.getElementById('app');
 const esc = s => String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
@@ -398,8 +478,10 @@ function masthead(size){
 function render(){
   if(state.screen==='code'){ renderCode(); }
   else if(state.screen==='backstage'){ renderBackstage(); }
+  else if(state.screen==='precorrect'){ renderPrecorrect(); }
+  else if(state.screen==='correct'){ renderCorrect(); }
+  else if(state.screen==='results'){ renderResults(); }
   else if(state.idx<0){ renderWelcome(); }
-  else if(state.idx>=Q.length){ renderSummary(); }
   else { renderQuestion(); }
   window.scrollTo(0,0);
 }
@@ -443,6 +525,13 @@ function renderQuestion(){
 
   if(q.type==='text'){
     html+='<div class="field"><input type="text" id="ans" placeholder="'+esc(q.ph||'Ert svar')+'" value="'+esc(a||'')+'"></div>';
+  }
+  else if(q.type==='price'){
+    const o=(a&&typeof a==='object')?a:{};
+    html+='<div class="pricewrap">'+
+      '<div><label>Kronor</label><input type="number" inputmode="numeric" min="0" id="priceKr" class="priceinp" placeholder="kr" value="'+esc(o.kr||'')+'"></div>'+
+      '<div><label>Öre</label><input type="number" inputmode="numeric" min="0" max="99" id="priceOre" class="priceinp" placeholder="öre" value="'+esc(o.ore||'')+'"></div>'+
+    '</div>';
   }
   else if(q.type==='fields'){
     q.fields.forEach((f,j)=>{
@@ -505,15 +594,22 @@ function renderQuestion(){
   const last=state.idx===Q.length-1;
   html+=
     '<div class="wait">⏸ Vänta tills quizmastern säger till</div>'+
+    navNums(state.idx, state.maxIdx)+
     '<div class="nav">'+
       '<button class="btn ghost" id="prevBtn">← Tillbaka</button>'+
-      '<button class="btn primary" id="nextBtn">'+(last?'Klar – visa svar':'Nästa →')+'</button>'+
+      '<button class="btn primary" id="nextBtn">'+(last?'Klar – lämna in':'Nästa →')+'</button>'+
     '</div>';
   app.innerHTML=html;
 
   // wiring
   if(q.type==='text'){
     document.getElementById('ans').addEventListener('input',e=>state.answers[state.idx]=e.target.value);
+  }
+  else if(q.type==='price'){
+    const cur=state.answers[state.idx];
+    if(!cur||typeof cur!=='object'||Array.isArray(cur)) state.answers[state.idx]={kr:'',ore:''};
+    document.getElementById('priceKr').addEventListener('input',e=>state.answers[state.idx].kr=e.target.value);
+    document.getElementById('priceOre').addEventListener('input',e=>state.answers[state.idx].ore=e.target.value);
   }
   else if(q.type==='fields'){
     if(!Array.isArray(state.answers[state.idx])) state.answers[state.idx]=new Array(q.fields.length).fill('');
@@ -550,8 +646,23 @@ function renderQuestion(){
     });
   }
 
-  document.getElementById('prevBtn').addEventListener('click',()=>{ state.idx--; render(); });
-  document.getElementById('nextBtn').addEventListener('click',()=>{ state.idx++; render(); });
+  function goNext(){
+    if(state.idx>=Q.length-1){ state.screen='precorrect'; render(); return; }
+    state.idx++; if(state.idx>state.maxIdx) state.maxIdx=state.idx; render();
+  }
+  document.getElementById('prevBtn').addEventListener('click',()=>{ if(state.idx>0){ state.idx--; render(); } });
+  document.getElementById('nextBtn').addEventListener('click',()=>{
+    if(last){ goNext(); return; }
+    if(state.idx+1>state.maxIdx){
+      showModal({title:'Har Tobias ställt frågan än?', buttons:[
+        {label:'Ja – gå vidare', cls:'primary', onClick:goNext},
+        {label:'Nej – håll i hatten!', cls:'ghost'}
+      ]});
+    } else { goNext(); }
+  });
+  document.querySelectorAll('.navnum').forEach(el=>{
+    el.addEventListener('click',()=>{ const t=+el.dataset.i; if(t<=state.maxIdx){ state.idx=t; render(); } });
+  });
 }
 
 function renderCode(){
@@ -580,7 +691,9 @@ function renderBackstage(){
       '<div class="sq" style="margin-bottom:6px">FRÅGA '+q.n+' · '+esc(q.cat)+'</div>'+
       (IMAGES[q.img]?'<img class="bsimg" src="'+IMAGES[q.img]+'" alt="">':'')+
       '<div class="bslabel">Säg:</div><div class="bssay">'+esc(m.say||'')+'</div>'+
-      '<div class="bslabel">Facit:</div><div class="bsfac">'+esc(m.ans||'')+'</div>'+
+      (m.audio?'<div class="bslabel">Spela låt:</div>'+audioHTML(m):'')+
+      '<div class="bslabel">Facit:</div>'+facitHTML(m)+
+      (m.extra?'<div class="bslabel">Förklaringar (läs upp efteråt):</div><ul class="bsextra">'+m.extra.map(x=>'<li>'+esc(x)+'</li>').join('')+'</ul>':'')+
     '</div>';
   });
   html+='<div class="nav"><button class="btn primary full" id="bsBack">← Tillbaka till quizet</button></div>';
@@ -607,6 +720,11 @@ function buildLines(qi){
   const q=Q[qi]; const a=state.answers[qi]; const lines=[];
   const norm=(label,val)=>({key:qi+'_'+lines.length, kind:'normal', label:label, val:(val||'').trim()});
   if(q.type==='text'){ lines.push(norm(null,a)); }
+  else if(q.type==='price'){
+    const o=(a&&typeof a==='object')?a:{};
+    const kr=String(o.kr==null?'':o.kr).trim(), ore=String(o.ore==null?'':o.ore).trim();
+    lines.push(norm(null, (kr||ore)?((kr||'0')+' kr '+(ore||'0')+' öre'):''));
+  }
   else if(q.type==='radio'){
     const v=(a!=null&&q.options[a]!=null)?(q.letters?('Alternativ '+q.options[a]):q.options[a]):'';
     lines.push(norm(null,v));
@@ -645,32 +763,47 @@ function scoreFor(l){
 function totalScore(){ let s=0; Q.forEach((q,i)=>buildLines(i).forEach(l=>{ s+=scoreFor(l); })); return s; }
 function gb(key,v,cls,cur,label){ return '<button class="gbtn '+cls+(cur===v?' on':'')+'" data-key="'+key+'" data-v="'+v+'">'+label+'</button>'; }
 
-function renderSummary(){
-  let html=masthead('sm')+
-    '<div class="progress"><span>KLART!</span><span class="cat">'+(esc(state.team)||'Laget')+'</span></div>'+
-    '<div class="scorebox">Totalpoäng: <span id="scoreVal">'+totalScore()+'</span></div>'+
-    '<div class="multiinstr" style="font-size:15px;margin-bottom:14px">Rätta tillsammans – markera varje svar rätt eller fel.</div>';
-  Q.forEach((q,i)=>{
-    const lines=buildLines(i);
-    html+='<div class="sumitem"><div class="sq" style="margin-bottom:6px">FRÅGA '+q.n+' · '+esc(q.cat)+'</div>';
-    lines.forEach(l=>{
-      const g=state.grades[l.key]||'';
-      const lab=l.label?'<span class="lbl">'+esc(l.label)+':</span> ':'';
-      const txt=l.val?(lab+esc(l.val)):(lab+'— inget svar —');
-      let btns='<div class="gbtns">';
-      if(l.kind==='year'){ btns+=gb(l.key,'y3','pos',g,'+3')+gb(l.key,'y1','pos',g,'+1')+gb(l.key,'yf','neg',g,'−3'); }
-      else { btns+=gb(l.key,'r','pos',g,'Rätt')+gb(l.key,'f','neg',g,'Fel'); }
-      btns+='</div>';
-      html+='<div class="graderow"><div class="ga'+(l.val?'':' empty')+'">'+txt+'</div>'+btns+'</div>';
-    });
-    html+='</div>';
+function renderPrecorrect(){
+  app.innerHTML=masthead('sm')+
+    '<div class="bighero">Bra jobbat!</div>'+
+    '<div class="intro" style="border-left-color:var(--teal)">Era svar är inlämnade. <b>Rättningen börjar strax.</b> Ni rättar tillsammans, en fråga i taget – tryck inte på "Starta rättning" förrän Tobias säger till.</div>'+
+    '<div class="wait">⏸ Vänta på Tobias innan ni startar rättningen</div>'+
+    '<div class="nav"><button class="btn ghost" id="backToQ">← Tillbaka till frågorna</button>'+
+    '<button class="btn primary" id="startCorr">Starta rättning →</button></div>';
+  document.getElementById('backToQ').addEventListener('click',()=>{ state.screen=null; state.idx=Q.length-1; render(); });
+  document.getElementById('startCorr').addEventListener('click',()=>{
+    showModal({title:'Är det dags att rätta?', body:'Starta först när Tobias säger till.', buttons:[
+      {label:'Ja – starta rättning', cls:'primary', onClick:()=>{ runAutoGrade(); state.cidx=0; state.screen='correct'; render(); }},
+      {label:'Nej, vänta', cls:'ghost'}
+    ]});
   });
-  html+='<div class="sumnote">Årtals-rundan (fråga 18): +3 rätt år · +1 rätt årtionde · −3 fel år.</div>'+
-    '<div class="nav"><button class="btn ghost" id="editBtn">← Ändra svar</button>'+
-    '<button class="btn primary" id="copyBtn">Kopiera resultat</button></div>'+
-    '<div class="nav" style="margin-top:10px"><button class="btn ghost" id="printBtn">Skriv ut / PDF</button>'+
-    '<button class="btn ghost" id="resetBtn">Börja om</button></div>'+
-    '<textarea id="exportTa" class="exportta" readonly></textarea>';
+}
+
+function renderCorrect(){
+  const i=state.cidx, q=Q[i], m=MANUS[q.n]||{}, lines=buildLines(i);
+  let html=masthead('sm')+
+    '<div class="progress"><span>RÄTTNING '+q.n+' / '+Q.length+'</span><span class="cat">Poäng: <b id="scoreVal">'+totalScore()+'</b></span></div>'+
+    '<div class="pbar"><i style="width:'+Math.round((i+1)/Q.length*100)+'%"></i></div>'+
+    '<div class="sq" style="margin:8px 2px 4px">FRÅGA '+q.n+' · '+esc(q.cat)+'</div>'+
+    '<div class="corrhint">Autorättat – ändra om något blivit fel.</div>'+
+    '<div class="sumitem">';
+  lines.forEach(l=>{
+    const g=state.grades[l.key]||'';
+    const lab=l.label?'<span class="lbl">'+esc(l.label)+':</span> ':'';
+    const txt=l.val?(lab+esc(l.val)):(lab+'— inget svar —');
+    let btns='<div class="gbtns">';
+    if(l.kind==='year'){ btns+=gb(l.key,'y3','pos',g,'+3')+gb(l.key,'y1','pos',g,'+1')+gb(l.key,'yf','neg',g,'−3'); }
+    else { btns+=gb(l.key,'r','pos',g,'Rätt')+gb(l.key,'f','neg',g,'Fel'); }
+    btns+='</div>';
+    html+='<div class="graderow"><div class="ga'+(l.val?'':' empty')+'">'+txt+'</div>'+btns+'</div>';
+  });
+  html+='</div>'+
+    '<div class="faclabel">Rätt svar</div>'+
+    '<div class="facbox">'+facitHTML(m)+audioHTML(m)+'</div>';
+  const lastC=i===Q.length-1;
+  html+= navNums(i, Q.length-1)+
+    '<div class="nav"><button class="btn ghost" id="cPrev">← Föregående</button>'+
+    '<button class="btn primary" id="cNext">'+(lastC?'Visa resultat →':'Nästa fråga →')+'</button></div>';
   app.innerHTML=html;
   app.querySelectorAll('.gbtn').forEach(b=>{
     b.addEventListener('click',()=>{
@@ -680,8 +813,25 @@ function renderSummary(){
       document.getElementById('scoreVal').textContent=totalScore();
     });
   });
+  document.getElementById('cPrev').addEventListener('click',()=>{ if(state.cidx>0){ state.cidx--; render(); } });
+  document.getElementById('cNext').addEventListener('click',()=>{ if(lastC){ state.screen='results'; render(); } else { state.cidx++; render(); } });
+  document.querySelectorAll('.navnum').forEach(el=>{ el.addEventListener('click',()=>{ state.cidx=+el.dataset.i; render(); }); });
+}
+
+function renderResults(){
+  let html=masthead('sm')+
+    '<div class="progress"><span>RESULTAT</span><span class="cat">'+(esc(state.team)||'Laget')+'</span></div>'+
+    '<div class="scorebox">Totalpoäng: <span>'+totalScore()+'</span></div>'+
+    '<div class="multiinstr" style="font-size:15px;margin-bottom:10px">Snyggt jobbat – här är poängen per fråga.</div>';
+  Q.forEach((q,i)=>{ let s=0; buildLines(i).forEach(l=>s+=scoreFor(l)); html+='<div class="resrow"><span>FRÅGA '+q.n+' · '+esc(q.cat)+'</span><span class="respts">'+s+' p</span></div>'; });
+  html+='<div class="nav" style="margin-top:14px"><button class="btn ghost" id="backCorr">← Tillbaka till rättning</button>'+
+    '<button class="btn primary" id="copyBtn">Kopiera resultat</button></div>'+
+    '<div class="nav" style="margin-top:10px"><button class="btn ghost" id="printBtn">Skriv ut / PDF</button>'+
+    '<button class="btn ghost" id="resetBtn">Börja om</button></div>'+
+    '<textarea id="exportTa" class="exportta" readonly></textarea>';
+  app.innerHTML=html;
   const ta=document.getElementById('exportTa');
-  document.getElementById('editBtn').addEventListener('click',()=>{ state.idx=Q.length-1; render(); });
+  document.getElementById('backCorr').addEventListener('click',()=>{ state.screen='correct'; render(); });
   document.getElementById('copyBtn').addEventListener('click',()=>{
     const txt=buildText(); ta.value=txt; ta.style.display='block';
     try{ if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).catch(()=>{}); } }catch(e){}
@@ -695,7 +845,7 @@ function renderSummary(){
   const rb=document.getElementById('resetBtn');
   rb.addEventListener('click',()=>{
     if(!resetArmed){ resetArmed=true; rb.textContent='Säker? Tryck igen'; setTimeout(()=>{resetArmed=false; if(document.body.contains(rb)) rb.textContent='Börja om';},2500); return; }
-    state.idx=-1; state.answers={}; state.grades={}; render();
+    state.idx=-1; state.maxIdx=0; state.cidx=0; state.answers={}; state.grades={}; state.screen=null; render();
   });
 }
 
