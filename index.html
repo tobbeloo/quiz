@@ -336,6 +336,8 @@
   .pricewrap label{display:block;font-family:var(--marker);font-size:14px;color:var(--maroon-2);margin-bottom:4px;}
   .priceinp{width:100%;font-family:var(--body);font-size:18px;color:var(--ink);background:var(--cream-2);border:2px solid var(--ink);border-radius:2px;padding:11px 12px;box-shadow:2px 2px 0 rgba(40,20,8,.15);}
   .priceinp:focus{outline:none;border-color:var(--gold-deep);box-shadow:2px 2px 0 var(--gold);}
+  .nisvar{font-size:14.5px;margin-top:3px;font-weight:600;}
+  .nisvar .empty{color:#9b6a45;font-style:italic;font-weight:400;}
 </style>
 </head>
 <body>
@@ -789,8 +791,13 @@ function renderCorrect(){
     '<div class="sumitem">';
   lines.forEach(l=>{
     const g=state.grades[l.key]||'';
-    const lab=l.label?'<span class="lbl">'+esc(l.label)+':</span> ':'';
-    const txt=l.val?(lab+esc(l.val)):(lab+'— inget svar —');
+    let txt;
+    if(l.kind==='year'){
+      txt='<span class="lbl">'+esc(l.label)+'</span><div class="nisvar">Ni svarade: '+(l.val?esc(l.val):'<span class="empty">—</span>')+'</div>';
+    } else {
+      const lab=l.label?'<span class="lbl">'+esc(l.label)+':</span> ':'';
+      txt=l.val?(lab+esc(l.val)):(lab+'— inget svar —');
+    }
     let btns='<div class="gbtns">';
     if(l.kind==='year'){ btns+=gb(l.key,'y3','pos',g,'+3')+gb(l.key,'y1','pos',g,'+1')+gb(l.key,'yf','neg',g,'−3'); }
     else { btns+=gb(l.key,'r','pos',g,'Rätt')+gb(l.key,'f','neg',g,'Fel'); }
@@ -798,8 +805,8 @@ function renderCorrect(){
     html+='<div class="graderow"><div class="ga'+(l.val?'':' empty')+'">'+txt+'</div>'+btns+'</div>';
   });
   html+='</div>'+
-    '<div class="faclabel">Rätt svar</div>'+
-    '<div class="facbox">'+facitHTML(m)+'</div>';
+    '<div class="nav" style="margin-top:14px"><button class="btn ghost full" id="facToggle">Visa rätt svar</button></div>'+
+    '<div class="facbox" id="facbox" style="display:none;margin-top:10px">'+facitHTML(m)+'</div>';
   const lastC=i===Q.length-1;
   html+= navNums(i, Q.length-1)+
     '<div class="nav"><button class="btn ghost" id="cPrev">← Föregående</button>'+
@@ -816,6 +823,8 @@ function renderCorrect(){
   document.getElementById('cPrev').addEventListener('click',()=>{ if(state.cidx>0){ state.cidx--; render(); } });
   document.getElementById('cNext').addEventListener('click',()=>{ if(lastC){ state.screen='results'; render(); } else { state.cidx++; render(); } });
   document.querySelectorAll('.navnum').forEach(el=>{ el.addEventListener('click',()=>{ state.cidx=+el.dataset.i; render(); }); });
+  const ft=document.getElementById('facToggle'), fb=document.getElementById('facbox');
+  ft.addEventListener('click',()=>{ const hidden=fb.style.display==='none'; fb.style.display=hidden?'block':'none'; ft.textContent=hidden?'Dölj rätt svar':'Visa rätt svar'; });
 }
 
 function renderResults(){
