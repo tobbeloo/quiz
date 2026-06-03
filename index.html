@@ -466,7 +466,7 @@ function showModal(opts){
 }
 
 const DECADES=['90-tal','00-tal','10-tal'];
-const YEARS=(()=>{const a=[];for(let y=1990;y<=2015;y++)a.push(String(y));return a;})();
+const YEARS=(()=>{const a=[];for(let y=1990;y<=2026;y++)a.push(String(y));return a;})();
 function opt(v,sel){return '<option value="'+v+'"'+(sel===v?' selected':'')+'>'+(v===''?'—':v)+'</option>';}
 function decadeOpts(cur){return opt('',cur)+DECADES.map(d=>opt(d,cur)).join('');}
 function yearOpts(cur){return opt('',cur)+YEARS.map(y=>opt(y,cur)).join('');}
